@@ -1,0 +1,17 @@
+claim_coffee:
+  name: Claim free Cafe Nero
+  description: >-
+    Manually claims the free Cafe Nero offer from Octopus Energy's Octoplus
+    rewards. Safe to call even if already claimed; a notification will report
+    the outcome.
+  fields:
+    force:
+      name: Force
+      description: >-
+        Bypass the local "already claimed this week" guard. The Octopus API
+        will still enforce its own weekly limit server-side.
+      required: false
+      default: false
+      example: false
+      selector:
+        boolean:

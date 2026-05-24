@@ -30,11 +30,11 @@ description: "Task list for Home Assistant Cafe Nero Auto-Claim integration"
 
 **Purpose**: Create the directory layout and distribution metadata.
 
-- [ ] T001 Create directories `custom_components/octopus_nero/` and `tests/test_octopus_nero/`
-- [ ] T002 [P] Create `custom_components/octopus_nero/manifest.json` with domain `octopus_nero`, name, version `0.1.0`, `iot_class: cloud_polling`, `integration_type: service`, `config_flow: true`, codeowners, documentation URL
-- [ ] T003 [P] Create `hacs.json` at repo root with name, content_in_root false, and minimum HA version
-- [ ] T004 [P] Create `tests/test_octopus_nero/__init__.py` and `tests/test_octopus_nero/conftest.py` with shared fixtures (`mock_config_entry`, `mock_aioclient`, `enable_custom_integrations`)
-- [ ] T005 [P] Create skeleton `README.md` at repo root with project description, link to spec, and "work in progress" notice
+- [X] T001 Create directories `custom_components/octopus_nero/` and `tests/test_octopus_nero/`
+- [X] T002 [P] Create `custom_components/octopus_nero/manifest.json` with domain `octopus_nero`, name, version `0.1.0`, `iot_class: cloud_polling`, `integration_type: service`, `config_flow: true`, codeowners, documentation URL
+- [X] T003 [P] Create `hacs.json` at repo root with name, content_in_root false, and minimum HA version
+- [X] T004 [P] Create `tests/test_octopus_nero/__init__.py` and `tests/test_octopus_nero/conftest.py` with shared fixtures (`mock_config_entry`, `mock_aioclient`, `enable_custom_integrations`)
+- [X] T005 [P] Create skeleton `README.md` at repo root with project description, link to spec, and "work in progress" notice
 
 ---
 
@@ -44,14 +44,14 @@ description: "Task list for Home Assistant Cafe Nero Auto-Claim integration"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T006 Create `custom_components/octopus_nero/const.py` with `DOMAIN`, `AUTH_ENDPOINT`, `BACKEND_ENDPOINT`, `OFFER_SLUG = "caffe-nero"`, `POLL_INTERVAL_MINUTES = 5`, `TOKEN_REFRESH_LEAD_MINUTES = 10`, `ELIGIBILITY_PERIOD_DAYS = 7`
-- [ ] T007 [P] Write token-lifecycle tests in `tests/test_octopus_nero/test_api.py`: `test_obtain_token_with_api_key`, `test_refresh_token_proactive_at_lead_time`, `test_refresh_token_falls_back_to_apikey_on_failure`
-- [ ] T008 Implement `OctopusNeroClient` with `obtain_token(api_key)` and `refresh_token(refresh_token)` in `custom_components/octopus_nero/api.py` (depends on T006, T007 tests must fail first)
-- [ ] T009 [P] Write config-flow tests in `tests/test_octopus_nero/test_config_flow.py`: `test_user_step_happy_path`, `test_user_step_invalid_apikey`, `test_user_step_cannot_connect`
-- [ ] T010 Implement `OctopusNeroConfigFlow.async_step_user` in `custom_components/octopus_nero/config_flow.py` — collect `api_key` and `account_number`, validate against live API (depends on T008, T009)
-- [ ] T011 [P] Write coordinator-skeleton tests in `tests/test_octopus_nero/test_coordinator.py`: `test_first_refresh_authenticates`, `test_refresh_failure_marks_update_failed`
-- [ ] T012 Implement `OctopusNeroCoordinator(DataUpdateCoordinator)` skeleton with `_async_setup` (initial auth) and `_async_update_data` stub in `custom_components/octopus_nero/coordinator.py` (depends on T008, T011)
-- [ ] T013 Implement `async_setup_entry` in `custom_components/octopus_nero/__init__.py` — create coordinator, call `async_config_entry_first_refresh`, store on `hass.data[DOMAIN][entry_id]` (depends on T010, T012)
+- [X] T006 Create `custom_components/octopus_nero/const.py` with `DOMAIN`, `AUTH_ENDPOINT`, `BACKEND_ENDPOINT`, `OFFER_SLUG = "caffe-nero"`, `POLL_INTERVAL_MINUTES = 5`, `TOKEN_REFRESH_LEAD_MINUTES = 10`, `ELIGIBILITY_PERIOD_DAYS = 7`
+- [X] T007 [P] Write token-lifecycle tests in `tests/test_octopus_nero/test_api.py`: `test_obtain_token_with_api_key`, `test_refresh_token_proactive_at_lead_time`, `test_refresh_token_falls_back_to_apikey_on_failure`
+- [X] T008 Implement `OctopusNeroClient` with `obtain_token(api_key)` and `refresh_token(refresh_token)` in `custom_components/octopus_nero/api.py` (depends on T006, T007 tests must fail first)
+- [X] T009 [P] Write config-flow tests in `tests/test_octopus_nero/test_config_flow.py`: `test_user_step_happy_path`, `test_user_step_invalid_apikey`, `test_user_step_cannot_connect`
+- [X] T010 Implement `OctopusNeroConfigFlow.async_step_user` in `custom_components/octopus_nero/config_flow.py` — collect `api_key` and `account_number`, validate against live API (depends on T008, T009)
+- [X] T011 [P] Write coordinator-skeleton tests in `tests/test_octopus_nero/test_coordinator.py`: `test_first_refresh_authenticates`, `test_refresh_failure_marks_update_failed`
+- [X] T012 Implement `OctopusNeroCoordinator(DataUpdateCoordinator)` skeleton with `_async_setup` (initial auth) and `_async_update_data` stub in `custom_components/octopus_nero/coordinator.py` (depends on T008, T011)
+- [X] T013 Implement `async_setup_entry` in `custom_components/octopus_nero/__init__.py` — create coordinator, call `async_config_entry_first_refresh`, store on `hass.data[DOMAIN][entry_id]` (depends on T010, T012)
 
 **Checkpoint**: Foundation ready — integration can be installed and authenticates; no entities or services yet.
 
@@ -65,16 +65,16 @@ description: "Task list for Home Assistant Cafe Nero Auto-Claim integration"
 
 ### Tests for User Story 1
 
-- [ ] T014 [P] [US1] Write claim API tests in `tests/test_octopus_nero/test_api.py`: `test_claim_coffee_returns_reward_id`, `test_claim_coffee_handles_max_claims_reached`, `test_claim_coffee_handles_out_of_stock`
-- [ ] T015 [P] [US1] Write coordinator claim tests in `tests/test_octopus_nero/test_coordinator.py`: `test_coordinator_claim_returns_success`, `test_duplicate_claim_guard_blocks_within_period`, `test_eligibility_period_resets_after_seven_days`
-- [ ] T016 [P] [US1] Write service tests in `tests/test_octopus_nero/test_services.py`: `test_claim_service_calls_coordinator`, `test_claim_service_force_bypasses_local_guard`, `test_claim_service_handles_already_claimed`
+- [X] T014 [P] [US1] Write claim API tests in `tests/test_octopus_nero/test_api.py`: `test_claim_coffee_returns_reward_id`, `test_claim_coffee_handles_max_claims_reached`, `test_claim_coffee_handles_out_of_stock`
+- [X] T015 [P] [US1] Write coordinator claim tests in `tests/test_octopus_nero/test_coordinator.py`: `test_coordinator_claim_returns_success`, `test_duplicate_claim_guard_blocks_within_period`, `test_eligibility_period_resets_after_seven_days`
+- [X] T016 [P] [US1] Write service tests in `tests/test_octopus_nero/test_services.py`: `test_claim_service_calls_coordinator`, `test_claim_service_force_bypasses_local_guard`, `test_claim_service_handles_already_claimed`
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Implement `OctopusNeroClient.claim_coffee(account_number)` in `custom_components/octopus_nero/api.py` — isolate `claimOctoplusReward` mutation here for the August 2026 swap (depends on T014)
-- [ ] T018 [US1] Add `async_claim_coffee(force: bool = False)` method and `_last_claimed_at` guard to coordinator in `custom_components/octopus_nero/coordinator.py` (depends on T015, T017)
-- [ ] T019 [P] [US1] Create `custom_components/octopus_nero/services.yaml` with `claim_coffee` schema including optional `force` boolean field
-- [ ] T020 [US1] Register `octopus_nero.claim_coffee` service handler in `custom_components/octopus_nero/__init__.py` — delegates to coordinator's `async_claim_coffee` (depends on T016, T018, T019)
+- [X] T017 [US1] Implement `OctopusNeroClient.claim_coffee(account_number)` in `custom_components/octopus_nero/api.py` — isolate `claimOctoplusReward` mutation here for the August 2026 swap (depends on T014)
+- [X] T018 [US1] Add `async_claim_coffee(force: bool = False)` method and `_last_claimed_at` guard to coordinator in `custom_components/octopus_nero/coordinator.py` (depends on T015, T017)
+- [X] T019 [P] [US1] Create `custom_components/octopus_nero/services.yaml` with `claim_coffee` schema including optional `force` boolean field
+- [X] T020 [US1] Register `octopus_nero.claim_coffee` service handler in `custom_components/octopus_nero/__init__.py` — delegates to coordinator's `async_claim_coffee` (depends on T016, T018, T019)
 
 **Checkpoint**: User Story 1 fully functional — manual claim via service call works end-to-end.
 
@@ -88,16 +88,16 @@ description: "Task list for Home Assistant Cafe Nero Auto-Claim integration"
 
 ### Tests for User Story 2
 
-- [ ] T021 [P] [US2] Write status-query API tests in `tests/test_octopus_nero/test_api.py`: `test_get_offer_status_maps_available`, `test_get_offer_status_maps_claimed`, `test_get_offer_status_maps_out_of_stock`
-- [ ] T022 [P] [US2] Write polling + auto-claim tests in `tests/test_octopus_nero/test_coordinator.py`: `test_coordinator_polls_status_at_interval`, `test_auto_claim_triggers_on_available`, `test_auto_claim_skipped_when_already_claimed_this_period`
-- [ ] T023 [P] [US2] Write sensor tests in `tests/test_octopus_nero/test_sensor.py`: `test_sensor_state_reflects_coordinator_data`, `test_sensor_attributes_include_last_checked_and_last_claimed`, `test_sensor_unavailable_on_update_failed`
+- [X] T021 [P] [US2] Write status-query API tests in `tests/test_octopus_nero/test_api.py`: `test_get_offer_status_maps_available`, `test_get_offer_status_maps_claimed`, `test_get_offer_status_maps_out_of_stock`
+- [X] T022 [P] [US2] Write polling + auto-claim tests in `tests/test_octopus_nero/test_coordinator.py`: `test_coordinator_polls_status_at_interval`, `test_auto_claim_triggers_on_available`, `test_auto_claim_skipped_when_already_claimed_this_period`
+- [X] T023 [P] [US2] Write sensor tests in `tests/test_octopus_nero/test_sensor.py`: `test_sensor_state_reflects_coordinator_data`, `test_sensor_attributes_include_last_checked_and_last_claimed`, `test_sensor_unavailable_on_update_failed`
 
 ### Implementation for User Story 2
 
-- [ ] T024 [US2] Implement `OctopusNeroClient.get_offer_status(account_number)` in `custom_components/octopus_nero/api.py` — parse `octoplusOfferGroups` response into the `OfferStatus` enum (depends on T021)
-- [ ] T025 [US2] Implement coordinator `_async_update_data` to call `get_offer_status` every 5 minutes and invoke `async_claim_coffee` automatically when state is `available` and within-period guard allows it (depends on T018, T022, T024)
-- [ ] T026 [US2] Create `OfferStatusSensor(CoordinatorEntity, SensorEntity)` in `custom_components/octopus_nero/sensor.py` with `state`, `extra_state_attributes`, and `unique_id` derived from entry ID (depends on T023, T025)
-- [ ] T027 [US2] Forward sensor platform in `async_setup_entry` (`await hass.config_entries.async_forward_entry_setups(entry, [Platform.SENSOR])`) in `custom_components/octopus_nero/__init__.py` (depends on T026)
+- [X] T024 [US2] Implement `OctopusNeroClient.get_offer_status(account_number)` in `custom_components/octopus_nero/api.py` — parse `octoplusOfferGroups` response into the `OfferStatus` enum (depends on T021)
+- [X] T025 [US2] Implement coordinator `_async_update_data` to call `get_offer_status` every 5 minutes and invoke `async_claim_coffee` automatically when state is `available` and within-period guard allows it (depends on T018, T022, T024)
+- [X] T026 [US2] Create `OfferStatusSensor(CoordinatorEntity, SensorEntity)` in `custom_components/octopus_nero/sensor.py` with `state`, `extra_state_attributes`, and `unique_id` derived from entry ID (depends on T023, T025)
+- [X] T027 [US2] Forward sensor platform in `async_setup_entry` (`await hass.config_entries.async_forward_entry_setups(entry, [Platform.SENSOR])`) in `custom_components/octopus_nero/__init__.py` (depends on T026)
 
 **Checkpoint**: User Story 2 fully functional — sensor reflects state, auto-claim fires on availability transitions.
 
@@ -111,12 +111,12 @@ description: "Task list for Home Assistant Cafe Nero Auto-Claim integration"
 
 ### Tests for User Story 3
 
-- [ ] T028 [P] [US3] Write notification tests in `tests/test_octopus_nero/test_coordinator.py`: `test_success_notification_fires_on_claim`, `test_failure_notification_fires_on_out_of_stock`, `test_failure_notification_fires_on_auth_error`, `test_already_claimed_notification_message`
+- [X] T028 [P] [US3] Write notification tests in `tests/test_octopus_nero/test_coordinator.py`: `test_success_notification_fires_on_claim`, `test_failure_notification_fires_on_out_of_stock`, `test_failure_notification_fires_on_auth_error`, `test_already_claimed_notification_message`
 
 ### Implementation for User Story 3
 
-- [ ] T029 [US3] Add `_emit_claim_notification(result: ClaimResult)` helper to coordinator and call it from both the auto-claim and manual-claim paths in `custom_components/octopus_nero/coordinator.py` (depends on T020, T025, T028)
-- [ ] T030 [US3] Define notification message constants in `custom_components/octopus_nero/const.py` covering: success, already-claimed, out-of-stock, auth-failed, unknown-error
+- [X] T029 [US3] Add `_emit_claim_notification(result: ClaimResult)` helper to coordinator and call it from both the auto-claim and manual-claim paths in `custom_components/octopus_nero/coordinator.py` (depends on T020, T025, T028)
+- [X] T030 [US3] Define notification message constants in `custom_components/octopus_nero/const.py` covering: success, already-claimed, out-of-stock, auth-failed, unknown-error
 
 **Checkpoint**: All three user stories complete and independently testable.
 
@@ -126,14 +126,14 @@ description: "Task list for Home Assistant Cafe Nero Auto-Claim integration"
 
 **Purpose**: Reauth flow, translations, deprecation warning, packaging, and final validation.
 
-- [ ] T031 [P] Write reauth tests in `tests/test_octopus_nero/test_config_flow.py`: `test_reauth_flow_with_new_api_key`, `test_reauth_flow_with_invalid_key_shows_error`
-- [ ] T032 Implement `async_step_reauth` in `custom_components/octopus_nero/config_flow.py` (depends on T031)
-- [ ] T033 [P] Write reauth-trigger test in `tests/test_octopus_nero/test_coordinator.py`: `test_persistent_auth_failure_raises_config_entry_auth_failed`
-- [ ] T034 Raise `ConfigEntryAuthFailed` in coordinator when both `refresh_token` and `obtain_token(api_key)` fail in `custom_components/octopus_nero/coordinator.py` (depends on T033)
-- [ ] T035 [P] Create `custom_components/octopus_nero/strings.json` with config flow labels, error keys, and notification messages
-- [ ] T036 [P] Create `custom_components/octopus_nero/translations/en.json` mirroring `strings.json` values
-- [ ] T037 [P] Add startup warning log in `custom_components/octopus_nero/__init__.py` noting `claimOctoplusReward` deprecation (scheduled August 2026)
-- [ ] T038 [P] Expand `README.md` with installation steps, configuration walkthrough, known limitations, and HACS instructions
+- [X] T031 [P] Write reauth tests in `tests/test_octopus_nero/test_config_flow.py`: `test_reauth_flow_with_new_api_key`, `test_reauth_flow_with_invalid_key_shows_error`
+- [X] T032 Implement `async_step_reauth` in `custom_components/octopus_nero/config_flow.py` (depends on T031)
+- [X] T033 [P] Write reauth-trigger test in `tests/test_octopus_nero/test_coordinator.py`: `test_persistent_auth_failure_raises_config_entry_auth_failed`
+- [X] T034 Raise `ConfigEntryAuthFailed` in coordinator when both `refresh_token` and `obtain_token(api_key)` fail in `custom_components/octopus_nero/coordinator.py` (depends on T033)
+- [X] T035 [P] Create `custom_components/octopus_nero/strings.json` with config flow labels, error keys, and notification messages
+- [X] T036 [P] Create `custom_components/octopus_nero/translations/en.json` mirroring `strings.json` values
+- [X] T037 [P] Add startup warning log in `custom_components/octopus_nero/__init__.py` noting `claimOctoplusReward` deprecation (scheduled August 2026)
+- [X] T038 [P] Expand `README.md` with installation steps, configuration walkthrough, known limitations, and HACS instructions
 - [ ] T039 Run manual smoke test against the live Octopus Energy account following `specs/001-ha-nero-claim/quickstart.md`
 
 ---

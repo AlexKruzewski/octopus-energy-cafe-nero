@@ -1,0 +1,35 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Octopus Nero — Cafe Nero Auto-Claim",
+        "description": "Enter your Octopus Energy API key and account number. You can find your API key at octopus.energy/dashboard/developer-settings.",
+        "data": {
+          "api_key": "Octopus Energy API Key",
+          "account_number": "Account Number"
+        },
+        "data_description": {
+          "api_key": "Your Octopus Energy API key (starts with sk_live_)",
+          "account_number": "Your account number in the format A-XXXXXXXX"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate Octopus Nero",
+        "description": "Your Octopus Energy API key for account {account_number} has expired or been revoked. Enter a new API key to continue.",
+        "data": {
+          "api_key": "New API Key"
+        }
+      }
+    },
+    "error": {
+      "invalid_api_key": "Could not authenticate with that API key. Please check it.",
+      "invalid_account": "Account number not found for this API key.",
+      "cannot_connect": "Could not reach Octopus Energy. Check your connection.",
+      "unknown": "An unexpected error occurred. Please try again."
+    },
+    "abort": {
+      "already_configured": "This Octopus Energy account is already configured.",
+      "reauth_successful": "Re-authentication was successful."
+    }
+  }
+}
