@@ -89,3 +89,38 @@ Requirements met by:
 - Version field in manifest
 
 **Rationale**: HACS is the standard distribution mechanism for HA custom integrations. Building for it from the start costs nothing and enables easy installation.
+
+---
+
+## Reauthentication Flow
+
+**Decision**: When the API key is rejected after a successful initial setup (e.g. the user revoked their key), the coordinator raises `ConfigEntryAuthFailed`. HA automatically surfaces a reauth dialog where the user pastes a new API key.
+
+**Rationale**: This is HA's standard pattern for handling expired or invalidated credentials. It avoids us building bespoke UI and gives the user a familiar experience. The config flow's `async_step_reauth` validates the new key against the live API before saving.
+
+**Trigger conditions**:
+- Token refresh fails AND re-authentication with the stored API key also fails
+- API returns `INVALID_API_KEY` or equivalent error
+
+---
+
+## API Client Separation
+
+**Decision**: Extract a small `OctopusNeroClient` class into `api.py`, distinct from the HA `DataUpdateCoordinator`.
+
+**Rationale**:
+- The client can be unit-tested with mocked `aiohttp` without needing the HA test harness
+- The August 2026 deprecation swap touches a single file
+- The client is the natural boundary between Octopus's API surface and HA's runtime concerns
+
+**Methods**: `obtain_token(api_key)`, `refresh_token(refresh_token)`, `get_offer_status(account_number)`, `claim_coffee(account_number)`. Token state is held by the coordinator and passed in — the client itself is stateless.
+
+---
+
+## Awareness of Existing Octopus Energy HA Integration
+
+There is a popular community integration (`bottlecapdave/HomeAssistant-OctopusEnergy`) that exposes tariff data, smart meter readings, and intelligent dispatching for Octopus Energy customers. This integration does **not** cover the Octoplus rewards feature.
+
+**Decision**: Build `octopus_nero` as a standalone integration focused solely on Octoplus Cafe Nero claiming, rather than as a PR to the existing integration.
+
+**Rationale**: The existing integration is large and focuses on energy data; rewards claiming is orthogonal to its purpose. A small focused integration is easier to maintain, easier to install for users who only want this feature, and avoids coupling our update cadence to theirs. If maintainers of the larger integration want to incorporate this later, the code is small enough to port.

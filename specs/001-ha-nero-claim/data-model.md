@@ -75,3 +75,21 @@ Produced by each claim attempt. Used to fire notifications and update sensor sta
 The Cafe Nero offer resets weekly. An eligibility period is considered active from when `last_claimed` was set until 7 days later. If `last_claimed` is `None` or more than 7 days old, a new claim is eligible.
 
 This is enforced locally as a guard; the API also enforces it server-side via `MAX_CLAIMS_PER_PERIOD_REACHED`.
+
+---
+
+## Reauth State
+
+When the coordinator detects a persistent authentication failure, it transitions into a reauth state that HA handles through its standard reauth dialog.
+
+| State                   | Trigger                                                    | Resolution                            |
+|-------------------------|------------------------------------------------------------|---------------------------------------|
+| `authenticated`         | Token + refresh token valid                                | Normal operation                       |
+| `needs_reauth`          | Refresh fails AND re-auth with stored API key fails        | Coordinator raises `ConfigEntryAuthFailed`; HA UI prompts user for a new key |
+| `authenticated` (after) | User submits a valid new API key via the reauth dialog     | Coordinator resumes polling           |
+
+State transitions:
+- `authenticated` → `needs_reauth` (API rejects both refresh and api_key paths)
+- `needs_reauth` → `authenticated` (user completes reauth flow with valid key)
+
+The sensor reports `unavailable` while in `needs_reauth`. A persistent notification informs the user that reauth is required.
