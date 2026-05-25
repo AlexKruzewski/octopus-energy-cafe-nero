@@ -46,3 +46,7 @@ secrets.yaml
 # Home Assistant test artefacts
 home-assistant.log
 home-assistant_v2.db
+
+# Tooling
+.claude/
+.specify/

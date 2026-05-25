@@ -3,9 +3,8 @@ from __future__ import annotations
 
 DOMAIN = "octopus_nero"
 
-# GraphQL endpoints
-AUTH_ENDPOINT = "https://api.octopus.energy/v1/graphql/"
-BACKEND_ENDPOINT = "https://api.backend.octopus.energy/v1/graphql/"
+# GraphQL endpoint (single endpoint for auth + all queries)
+API_ENDPOINT = "https://api.octopus.energy/v1/graphql/"
 
 # Octoplus offer
 OFFER_SLUG = "caffe-nero"

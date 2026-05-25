@@ -8,6 +8,7 @@ import pytest
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.octopus_nero.api import (
     AuthTokens,
@@ -129,16 +130,13 @@ async def test_user_step_cannot_connect(
 async def test_reauth_flow_with_new_api_key(
     hass: HomeAssistant, mock_obtain_token_ok
 ) -> None:
-    entry = config_entries.ConfigEntry(
-        version=1,
-        minor_version=1,
+    entry = MockConfigEntry(
         domain=DOMAIN,
         title="Octopus Nero (A-AAAA1111)",
         data=_VALID_INPUT,
-        source=config_entries.SOURCE_USER,
         unique_id="A-AAAA1111",
     )
-    hass.config_entries._entries[entry.entry_id] = entry
+    entry.add_to_hass(hass)
 
     result = await hass.config_entries.flow.async_init(
         DOMAIN,
@@ -161,16 +159,13 @@ async def test_reauth_flow_with_new_api_key(
 async def test_reauth_flow_with_invalid_key_shows_error(
     hass: HomeAssistant, mock_obtain_token_auth_error
 ) -> None:
-    entry = config_entries.ConfigEntry(
-        version=1,
-        minor_version=1,
+    entry = MockConfigEntry(
         domain=DOMAIN,
         title="Octopus Nero (A-AAAA1111)",
         data=_VALID_INPUT,
-        source=config_entries.SOURCE_USER,
         unique_id="A-AAAA1111",
     )
-    hass.config_entries._entries[entry.entry_id] = entry
+    entry.add_to_hass(hass)
 
     result = await hass.config_entries.flow.async_init(
         DOMAIN,
