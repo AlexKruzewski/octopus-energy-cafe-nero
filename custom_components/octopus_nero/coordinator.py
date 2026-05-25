@@ -63,6 +63,7 @@ class OctopusNeroCoordinator(DataUpdateCoordinator[CoordinatorData]):
             _LOGGER,
             name=DOMAIN,
             update_interval=timedelta(minutes=POLL_INTERVAL_MINUTES),
+            config_entry=entry,
         )
         self._entry = entry
         self._api_key: str = entry.data[CONF_API_KEY]

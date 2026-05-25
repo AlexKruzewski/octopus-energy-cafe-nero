@@ -17,8 +17,7 @@ import aiohttp
 
 from .const import (
     ACCESS_TOKEN_TTL_MINUTES,
-    AUTH_ENDPOINT,
-    BACKEND_ENDPOINT,
+    API_ENDPOINT,
     OFFER_SLUG,
 )
 
@@ -129,7 +128,7 @@ class OctopusNeroClient:
     ) -> OfferStatusResult:
         """Look up the current Cafe Nero offer status for this account."""
         data = await self._post(
-            BACKEND_ENDPOINT,
+            API_ENDPOINT,
             query=_CHECK_OFFERS_QUERY,
             variables={"accountNumber": account_number},
             access_token=access_token,
@@ -142,7 +141,7 @@ class OctopusNeroClient:
         """Claim the free Cafe Nero offer for this account."""
         try:
             data = await self._post(
-                BACKEND_ENDPOINT,
+                API_ENDPOINT,
                 query=_CLAIM_REWARD_MUTATION,
                 variables={
                     "accountNumber": account_number,
@@ -165,7 +164,7 @@ class OctopusNeroClient:
 
     async def _token_request(self, input_payload: dict[str, str]) -> AuthTokens:
         data = await self._post(
-            AUTH_ENDPOINT,
+            API_ENDPOINT,
             query=_OBTAIN_TOKEN_QUERY,
             variables={"input": input_payload},
         )
@@ -243,7 +242,9 @@ def _claim_result_from_api_error(err: OctopusNeroApiError) -> ClaimResult:
 def _looks_like_auth_error(messages: list[str]) -> bool:
     for m in messages:
         lower = m.lower()
-        if "kt-ct-1124" in lower or "invalid token" in lower or "authentication" in lower:
+        if "kt-ct-1124" in lower or "authentication" in lower:
+            return True
+        if "invalid" in lower and "token" in lower:
             return True
     return False
 
